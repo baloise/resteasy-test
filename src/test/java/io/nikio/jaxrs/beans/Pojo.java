@@ -1,7 +1,10 @@
-package io.nikio.jaxrs;
+package io.nikio.jaxrs.beans;
 
 public class Pojo {
     private String name;
+
+    public Pojo() {
+    }
 
     public Pojo(String name) {
         this.name = name;

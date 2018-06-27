@@ -1,6 +1,10 @@
-package io.nikio.jaxrs;
+package io.nikio.jaxrs.resource;
+
+import io.nikio.jaxrs.RestEasyTest;
+import io.nikio.jaxrs.beans.Pojo;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
@@ -26,5 +30,12 @@ public class RestEndpoint {
         return Response.status(Response.Status.OK).entity(new Pojo("Hello")).build();
     }
 
+    @POST
+    @Path("/post")
+    @Produces("application/json")
+    public Response getGivenPojo(Pojo pojo) {
+        Pojo responsePojo = new Pojo("Hello " + pojo.getName());
+        return Response.status(Response.Status.OK).entity(responsePojo).build();
+    }
 }
 
