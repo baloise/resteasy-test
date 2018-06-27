@@ -17,8 +17,8 @@
     </properties>
 
     <scm>
-        <connection>https://github.com/niiku/resteasy-test.git</connection>
-        <developerConnection>https://github.com/niiku/resteasy-test.git</developerConnection>
+        <connection>${git-base-url}/B037364/resteasy-test.git</connection>
+        <developerConnection>${git-base-url}/B037364/resteasy-test.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
