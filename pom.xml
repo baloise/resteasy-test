@@ -16,6 +16,12 @@
         <junit.version>4.12</junit.version>
     </properties>
 
+    <scm>
+        <connection>https://github.com/niiku/resteasy-test.git</connection>
+        <developerConnection>https://github.com/niiku/resteasy-test.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>io.undertow</groupId>
