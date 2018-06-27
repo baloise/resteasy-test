@@ -6,7 +6,6 @@ import io.nikio.jaxrs.resource.RestEndpoint;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

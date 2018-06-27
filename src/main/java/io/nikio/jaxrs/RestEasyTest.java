@@ -70,6 +70,7 @@ public class RestEasyTest {
     }
 
     private UndertowJaxrsServer createTestContainer(int bindPort, String bindUrl) {
+        long start = System.currentTimeMillis();
         UndertowJaxrsServer server = new UndertowJaxrsServer();
         Undertow.Builder serverBuilder = Undertow.builder().addHttpListener(bindPort, bindUrl);
         server.start(serverBuilder);
@@ -85,7 +86,8 @@ public class RestEasyTest {
         deploymentInfo.setContextPath("/");
 
         server.deploy(deploymentInfo);
-        logger.info("Undertow with resteasy and jackson is running.");
+        long duration = System.currentTimeMillis() - start;
+        logger.info("Undertow with resteasy and jackson is running. "+duration+"ms needed.");
 
         return server;
     }
