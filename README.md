@@ -1,12 +1,9 @@
 # ResteasyTest
-RestEasyTest provides a convenient way to test JAX-RS resource in your JUnit test. It allows you to define you're REST endpoints in a JUnit tests and verify that you're exposed resources work properly. RestEasyTest is similar to [JerseyTest](https://github.com/jersey/jersey/blob/master/test-framework/core/src/main/java/org/glassfish/jersey/test/JerseyTest.java) but uses [Resteasy](https://resteasy.github.io/) as provider. The dependencies used are the same artifacts as in JBoss EAP / WildFly.
+ResteasyTest provides a convenient way to test JAX-RS resource in your JUnit test. It allows you to define you're REST endpoints in JUnit tests and verify that the exposed resources work properly. RestEasyTest is similar to [JerseyTest](https://github.com/jersey/jersey/blob/master/test-framework/core/src/main/java/org/glassfish/jersey/test/JerseyTest.java) but uses [Resteasy](https://resteasy.github.io/) as provider and is not as feature rich. The dependencies used are the same as in JBoss EAP / WildFly. These are [undertow](http://undertow.io/) as ServletContainer, [Resteasy](https://resteasy.github.io/) as JAX-RS implementation and [jackson 2](https://github.com/FasterXML/jackson) for JSON support. 
 
-It uses [undertow](http://undertow.io/) as ServletContainer, [Resteasy](https://resteasy.github.io/) as JAX-RS implementation and [jackson2](https://github.com/FasterXML/jackson) for JSON serialization. 
-
-# Gettings started
+# Setup dependencies
 Because ResteasyTest isn't available as Maven dependency in the Maven Central Repository yet, you need to include it in your project yourself. If demanded, I will make the effort to include it. 
 
-## Maven dependencies
 To get ResteasyTest running, you need to include the following Maven dependencies in your pom.xml in your `<dependencies></dependencies>` section:
 ```
 <dependency>
@@ -81,3 +78,44 @@ For JBoss EAP 7.1 and WildFly 11 (upstream project), you need the following depe
     <jackson.version>2.8.9</jackson.version>
 </properties>
 ```
+
+# Usage
+To use ResteasyTest, you need to include [ResteasyTest.java](https://raw.githubusercontent.com/niiku/resteasy-test/master/src/main/java/io/nikio/jaxrs/ResteasyTest.java) in your maven module where you want to test a JAX-RS resource. 
+
+To test a JAX-RS endpoint, create a test class and inherit the now included `ResteasyTest.java` class and override the method `configureResource()` to add an instance of your REST endpoint to ResteasyTest. 
+```
+public class RestEndpointTest extends ResteasyTest {
+    @Override
+    public List<Object> configureResources() {
+        return Stream.of(new RestEndpoint()).collect(Collectors.toList());
+    }
+}
+```
+To declare a provider (eg. for custom field mappings) override `configureProvider()`.
+```
+@Override
+public List<Object> configureProvider() {
+    return Stream.of(new ObjectMapperContextResolver()).collect(Collectors.toList());
+}
+```
+
+Now you can simply use `get()` and `post()` to test your endpoint:
+```
+@Test
+public void testGetPojo() {
+    Pojo expectedPojo = new Pojo("Hello");
+    Pojo actualPojo = get("/resource/pojo", Pojo.class);
+    Assert.assertEquals(expectedPojo, actualPojo);
+}
+@Test
+public void testPostPojo() {
+    Pojo world = new Pojo("World");
+    Pojo response = post("/resource/post", world, Pojo.class);
+    Assert.assertEquals("Hello World", response.getName());
+}
+```
+To get the result without deserialization, simply put `String.class` as last argument to `post()` or `get()`. You find complete examples in [ResteasyTestTest.java](https://github.com/niiku/resteasy-test/blob/master/src/test/java/io/nikio/jaxrs/ResteasyTestTest.java). 
+
+
+# CDI Support
+ResteasyTest doesn't support CDI directly. But you can use [cdi-unit](http://bryncooke.github.io/cdi-unit/) to inject a REST endpoint in your JUnit test and return it in the overriden `configureResources()` method. But for the most cases I would recommend using [mockito](http://site.mockito.org/) with its `MockitoJUnitRunner.class` to satisfy `@Inject` points. `cdi-unit` is slow because it's using [Weld](http://weld.cdi-spec.org/). I think the purpose should be to test your REST endpoints serialization/deserialization and URL only. 
