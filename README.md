@@ -1,2 +1,83 @@
-# RestEasyTest.java
-RestEasyTest is similar to JerseyTest (https://github.com/jersey/jersey/blob/master/test-framework/core/src/main/java/org/glassfish/jersey/test/JerseyTest.java) but uses RestEasy (https://resteasy.github.io/) as JAX-RS provider. Under the hood, undertow is used.
+# ResteasyTest
+RestEasyTest provides a convenient way to test JAX-RS resource in your JUnit test. It allows you to define you're REST endpoints in a JUnit tests and verify that you're exposed resources work properly. RestEasyTest is similar to [JerseyTest](https://github.com/jersey/jersey/blob/master/test-framework/core/src/main/java/org/glassfish/jersey/test/JerseyTest.java) but uses [Resteasy](https://resteasy.github.io/) as provider. The dependencies used are the same artifacts as in JBoss EAP / WildFly.
+
+It uses [undertow](http://undertow.io/) as ServletContainer, [Resteasy](https://resteasy.github.io/) as JAX-RS implementation and [jackson2](https://github.com/FasterXML/jackson) for JSON serialization. 
+
+# Gettings started
+Because ResteasyTest isn't available as Maven dependency in the Maven Central Repository yet, you need to include it in your project yourself. If demanded, I will make the effort to include it. 
+
+## Maven dependencies
+To get ResteasyTest running, you need to include the following Maven dependencies in your pom.xml in your `<dependencies></dependencies>` section:
+```
+<dependency>
+    <groupId>io.undertow</groupId>
+    <artifactId>undertow-servlet</artifactId>
+    <version>${undertow.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>io.undertow</groupId>
+    <artifactId>undertow-core</artifactId>
+    <version>${undertow.version}</version>
+    <scope>test</scope>    
+</dependency>
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+    <artifactId>resteasy-undertow</artifactId>
+    <version>${resteasy.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+    <artifactId>resteasy-jaxrs</artifactId>
+    <version>${resteasy.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+    <artifactId>resteasy-jackson2-provider</artifactId>
+    <version>${resteasy.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+To add JAXB annotation support, you might want to add these dependency too:
+```
+<dependency>
+    <groupId>com.fasterxml.jackson.module</groupId>
+    <artifactId>jackson-module-jaxb-annotations</artifactId>
+    <version>${jackson.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+For `java.time` support, you need to these dependency, if you're Jackson version is below 2.8.5, which is the case for JBoss EAP 7.0 or WildFly 10. 
+```
+<dependency>
+    <groupId>com.fasterxml.jackson.datatype</groupId>
+    <artifactId>jackson-datatype-jsr310</artifactId>
+    <version>${jackson.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+If your Jackson version is above 2.8.5 (like in JBoss EAP 7.1+), you need to use the [jackson-modules-java8](https://github.com/FasterXML/jackson-modules-java8), but these aren't tested yet in this setup. 
+
+### JBossEAP 7.0 / WildFly 10 dependency versions
+For JBoss EAP 7.0 and WildFly 10 (upstream project), you need the following dependency versions:
+```
+<properties>
+    <resteasy.version>3.0.16.Final</resteasy.version>
+    <undertow.version>1.3.21.Final</undertow.version>
+    <jackson.version>2.6.3</jackson.version>
+</properties>
+```
+So you use the same artifacts as in your application server. 
+
+### JBoss EAP 7.1 / WildFly 11 dependency versions
+For JBoss EAP 7.1 and WildFly 11 (upstream project), you need the following dependency versions. This setup isn't tested from me yet but should work. If you use additional Jackson modules, make sure these are compatible with these versions.
+```
+<properties>
+    <resteasy.version>3.0.24.Final</resteasy.version>
+    <undertow.version>1.3.25.Final</undertow.version>
+    <jackson.version>2.8.9</jackson.version>
+</properties>
+```

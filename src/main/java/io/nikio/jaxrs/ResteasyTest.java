@@ -19,16 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class RestEasyTest {
+public class ResteasyTest {
 
-    private static final Logger logger = Logger.getLogger(RestEasyTest.class.getName());
+    private static final Logger logger = Logger.getLogger(ResteasyTest.class.getName());
 
     private Client testClient;
     private UndertowJaxrsServer testContainer;
     private int bindPort;
     private String bindUrl = "localhost";
 
-    public RestEasyTest() {
+    public ResteasyTest() {
     }
 
     /**
@@ -94,7 +94,7 @@ public class RestEasyTest {
         resteasyDeployment.setProviders(configureProvider());
 
         DeploymentInfo deploymentInfo = server.undertowDeployment(resteasyDeployment);
-        deploymentInfo.setClassLoader(RestEasyTest.class.getClassLoader());
+        deploymentInfo.setClassLoader(ResteasyTest.class.getClassLoader());
         deploymentInfo.setDeploymentName(this.getClass().getName());
         deploymentInfo.setContextPath("/");
 

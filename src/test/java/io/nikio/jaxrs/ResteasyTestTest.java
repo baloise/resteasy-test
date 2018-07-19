@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ResteasyTestTest extends RestEasyTest {
+public class ResteasyTestTest extends ResteasyTest {
     @Override
     public List<Object> configureResources() {
         return Stream.of(new RestEndpoint()).collect(Collectors.toList());
