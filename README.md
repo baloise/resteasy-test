@@ -1,6 +1,9 @@
 # ResteasyTest
 ResteasyTest provides a convenient way to test JAX-RS resource in your JUnit test. It allows you to define you're REST endpoints in your tests classes and verify that the exposed resources work properly. ResteasyTest is similar to [JerseyTest](https://github.com/jersey/jersey/blob/master/test-framework/core/src/main/java/org/glassfish/jersey/test/JerseyTest.java) but uses [Resteasy](https://resteasy.github.io/) as provider and is not as feature rich. The dependencies used are the same as in JBoss EAP / WildFly. These are [undertow](http://undertow.io/) as ServletContainer, [Resteasy](https://resteasy.github.io/) as JAX-RS implementation and [jackson 2](https://github.com/FasterXML/jackson) for JSON support. 
 
+# How does it work
+ResteasyTest starts undertow using a free port on your system. In your JUnit test you define JAX-RS endpoints which are deployed to undertow. These endpoints can be tested with the methods `post()` and `get()` which use [ResteasyClient](https://docs.jboss.org/resteasy/docs/3.0-beta-3/userguide/html/RESTEasy_Client_Framework.html) to send the requests to the started undertow instance. 
+
 # Setup dependencies
 Because ResteasyTest isn't available as Maven dependency in the Maven Central Repository yet, you need to include it in your project yourself. If demanded, I will make the effort to include it. 
 
@@ -47,7 +50,7 @@ To add JAXB annotation support, you might want to add these dependency too:
 </dependency>
 ```
 
-For `java.time` support, you need to these dependency, if you're Jackson version is below 2.8.5, which is the case for JBoss EAP 7.0 or WildFly 10. 
+For `java.time` support, you need to this dependency, if the used Jackson version is below 2.8.5. This is the case for JBoss EAP 7.0 or WildFly 10. 
 ```
 <dependency>
     <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -56,10 +59,10 @@ For `java.time` support, you need to these dependency, if you're Jackson version
     <scope>test</scope>
 </dependency>
 ```
-If your Jackson version is above 2.8.5 (like in JBoss EAP 7.1+), you need to use the [jackson-modules-java8](https://github.com/FasterXML/jackson-modules-java8), but these aren't tested yet in this setup. 
+If your Jackson version is above 2.8.5 (like in JBoss EAP 7.1+), you need to use the [jackson-modules-java8](https://github.com/FasterXML/jackson-modules-java8). This isn't tested yet.
 
 ### JBossEAP 7.0 / WildFly 10 dependency versions
-For JBoss EAP 7.0 and WildFly 10 (upstream project), you need the following dependency versions:
+For JBoss EAP 7.0 and WildFly 10 (upstream project) use the following dependency versions:
 ```
 <properties>
     <resteasy.version>3.0.16.Final</resteasy.version>
@@ -67,10 +70,10 @@ For JBoss EAP 7.0 and WildFly 10 (upstream project), you need the following depe
     <jackson.version>2.6.3</jackson.version>
 </properties>
 ```
-So you use the same artifacts as in your application server. 
+So you use the same artifacts and versions as in your application server. 
 
 ### JBoss EAP 7.1 / WildFly 11 dependency versions
-For JBoss EAP 7.1 and WildFly 11 (upstream project), you need the following dependency versions. This setup isn't tested from me yet but should work. If you use additional Jackson modules, make sure these are compatible with these versions.
+For JBoss EAP 7.1 and WildFly 11 (upstream project) use the these dependency versions. This setup isn't tested from me yet but should work. If you use additional Jackson modules, make sure these are compatible with these versions.
 ```
 <properties>
     <resteasy.version>3.0.24.Final</resteasy.version>
@@ -82,7 +85,7 @@ For JBoss EAP 7.1 and WildFly 11 (upstream project), you need the following depe
 # Usage
 To use ResteasyTest, you need to include [ResteasyTest.java](https://raw.githubusercontent.com/niiku/resteasy-test/master/src/main/java/io/nikio/jaxrs/ResteasyTest.java) in your maven module where you want to test a JAX-RS resource. 
 
-To test a JAX-RS endpoint, create a test class and inherit the now included `ResteasyTest.java` class and override the method `configureResource()` to add an instance of your REST endpoint to ResteasyTest. 
+To test a JAX-RS endpoint, create a test class and inherit the now included `ResteasyTest.java` class. Override the method `configureResource()` to add an instance of your REST endpoint to ResteasyTest. 
 ```
 public class RestEndpointTest extends ResteasyTest {
     @Override
