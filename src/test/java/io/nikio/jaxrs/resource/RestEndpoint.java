@@ -1,6 +1,5 @@
 package io.nikio.jaxrs.resource;
 
-import io.nikio.jaxrs.RestEasyTest;
 import io.nikio.jaxrs.beans.Pojo;
 
 import javax.ws.rs.GET;

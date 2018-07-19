@@ -6,6 +6,7 @@ import io.nikio.jaxrs.resource.RestEndpoint;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,16 +24,22 @@ public class ResteasyTestTest extends RestEasyTest {
 
     @Test
     public void testGetPojo() {
-        Pojo pojo = get("/resource/pojo", Pojo.class);
+        Pojo expectedPojo = new Pojo("Hello");
 
-        Assert.assertEquals("Hello", pojo.getName());
+        Pojo actualPojo = get("/resource/pojo", Pojo.class);
+
+        Assert.assertEquals(expectedPojo, actualPojo);
     }
 
     @Test
     public void testGetLocalDate() {
-        String localDate = get("/resource/date", String.class);
+        LocalDate expectedDate = LocalDate.now();
 
-        Assert.assertEquals("\"0000-00-00\"".length(), localDate.length());
+        LocalDate localDate = get("/resource/date", LocalDate.class);
+        String localDateString = localDate.toString();
+
+        Assert.assertEquals("0000-00-00".length(), localDateString.length());
+        Assert.assertEquals(expectedDate, localDate);
     }
 
     @Test

@@ -1,25 +1,23 @@
 package io.nikio.jaxrs;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.MediaType;
-
+import io.undertow.Undertow;
+import io.undertow.servlet.api.DeploymentInfo;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.junit.After;
 import org.junit.Before;
 
-import io.undertow.Undertow;
-import io.undertow.servlet.api.DeploymentInfo;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class RestEasyTest {
 
@@ -33,12 +31,27 @@ public class RestEasyTest {
     public RestEasyTest() {
     }
 
+    /**
+     * Find a free server port.
+     *
+     * @return port number.
+     * @throws IOException
+     */
+    public static int findFreePort() throws IOException {
+        ServerSocket server = new ServerSocket(0);
+        int port = server.getLocalPort();
+        server.close();
+        return port;
+    }
+
     @Before
     public void restEasyTestSetUp() throws IOException {
         this.bindPort = findFreePort();
         logger.info("Staring test container at " + getBaseUri());
         this.testContainer = createTestContainer(bindPort, bindUrl);
-        this.testClient = new ResteasyClientBuilder().build();
+        ResteasyClientBuilder resteasyClientBuilder = new ResteasyClientBuilder();
+        configureProvider().forEach(resteasyClientBuilder::register);
+        this.testClient = resteasyClientBuilder.build();
     }
 
     @After
@@ -87,7 +100,7 @@ public class RestEasyTest {
 
         server.deploy(deploymentInfo);
         long duration = System.currentTimeMillis() - start;
-        logger.info("Undertow with resteasy and jackson is running. "+duration+"ms needed.");
+        logger.info("Undertow with resteasy and jackson is running. " + duration + "ms needed.");
 
         return server;
     }
@@ -103,19 +116,6 @@ public class RestEasyTest {
 
     public WebTarget request(String uri) {
         return testClient.target(getBaseUri() + uri);
-    }
-
-    /**
-     * Find a free server port.
-     *
-     * @return port number.
-     * @throws IOException
-     */
-    public static int findFreePort() throws IOException {
-        ServerSocket server = new ServerSocket(0);
-        int port = server.getLocalPort();
-        server.close();
-        return port;
     }
 
 }
