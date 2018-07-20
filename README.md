@@ -1,13 +1,13 @@
 # ResteasyTest
-ResteasyTest provides a convenient way to test JAX-RS resource in your JUnit test. It allows you to define you're REST endpoints in your tests classes and verify that the exposed resources work properly. ResteasyTest is similar to [JerseyTest](https://github.com/jersey/jersey/blob/master/test-framework/core/src/main/java/org/glassfish/jersey/test/JerseyTest.java) but uses [Resteasy](https://resteasy.github.io/) as provider and is not as feature rich. The dependencies used are the same as in JBoss EAP / WildFly. These are [undertow](http://undertow.io/) as ServletContainer, [Resteasy](https://resteasy.github.io/) as JAX-RS implementation and [jackson 2](https://github.com/FasterXML/jackson) for JSON support. 
+ResteasyTest provides a convenient way to test JAX-RS resources in your JUnit test. It allows you to define your REST endpoints in your tests classes and verify that the exposed resources work properly. ResteasyTest is similar to [JerseyTest](https://github.com/jersey/jersey/blob/master/test-framework/core/src/main/java/org/glassfish/jersey/test/JerseyTest.java) but uses [Resteasy](https://resteasy.github.io/) as provider and is not as feature rich. The dependencies used are the same as in JBoss EAP / WildFly. These are [undertow](http://undertow.io/) as ServletContainer, [Resteasy](https://resteasy.github.io/) as JAX-RS implementation and [jackson 2](https://github.com/FasterXML/jackson) for JSON support. 
 
 # How does it work
 ResteasyTest starts undertow using a free port on your system. In your JUnit test you define JAX-RS endpoints which are deployed to undertow. These endpoints can be tested with the methods `post()` and `get()` which use [ResteasyClient](https://docs.jboss.org/resteasy/docs/3.0-beta-3/userguide/html/RESTEasy_Client_Framework.html) to send the requests to the started undertow instance. 
 
 # Setup dependencies
-Because ResteasyTest isn't available as Maven dependency in the Maven Central Repository yet, you need to include it in your project yourself. If demanded, I will make the effort to include it. 
+Because ResteasyTest isn't available as Maven dependency in the Maven Central Repository, you need to include it in your project yourself. If demanded, I will make the effort to upload it. 
 
-To get ResteasyTest running, you need to include the following Maven dependencies in your pom.xml in your `<dependencies></dependencies>` section:
+To get ResteasyTest running, you need to include the following Maven dependencies in your `<dependencies></dependencies>` section:
 ```
 <dependency>
     <groupId>io.undertow</groupId>
