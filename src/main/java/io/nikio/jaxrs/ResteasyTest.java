@@ -8,6 +8,7 @@ import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.junit.After;
 import org.junit.Before;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -176,8 +177,16 @@ public class ResteasyTest {
         DeploymentInfo deploymentInfo = server.undertowDeployment(resteasyDeployment);
         deploymentInfo.setClassLoader(ResteasyTest.class.getClassLoader());
         deploymentInfo.setDeploymentName(this.getClass().getName());
-        deploymentInfo.setContextPath("/");
+
+        deploymentInfo.setContextPath(determineContextPath());
         return deploymentInfo;
+    }
+
+    private String determineContextPath() {
+        if (configureApplication() == null || !configureApplication().getClass().isAnnotationPresent(ApplicationPath.class)) {
+            return "/";
+        }
+        return configureApplication().getClass().getAnnotation(ApplicationPath.class).value();
     }
 
     private ResteasyDeployment createDeployment() {
