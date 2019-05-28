@@ -1,4 +1,4 @@
-package io.nikio.jaxrs;
+package com.baloise.jaxrs;
 
 import io.undertow.Undertow;
 import io.undertow.servlet.api.DeploymentInfo;

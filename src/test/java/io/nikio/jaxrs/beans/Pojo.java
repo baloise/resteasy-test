@@ -1,4 +1,4 @@
-package io.nikio.jaxrs.beans;
+package com.baloise.jaxrs.beans;
 
 import java.util.Objects;
 

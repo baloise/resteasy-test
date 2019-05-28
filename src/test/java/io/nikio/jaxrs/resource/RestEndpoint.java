@@ -1,6 +1,6 @@
-package io.nikio.jaxrs.resource;
+package com.baloise.jaxrs.resource;
 
-import io.nikio.jaxrs.beans.Pojo;
+import com.baloise.jaxrs.beans.Pojo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;

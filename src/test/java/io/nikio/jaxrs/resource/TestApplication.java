@@ -1,4 +1,4 @@
-package io.nikio.jaxrs.resource;
+package com.baloise.jaxrs.resource;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

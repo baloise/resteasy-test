@@ -1,8 +1,8 @@
-package io.nikio.jaxrs;
+package com.baloise.jaxrs;
 
-import io.nikio.jaxrs.beans.Pojo;
-import io.nikio.jaxrs.provider.ObjectMapperContextResolver;
-import io.nikio.jaxrs.resource.RestEndpoint;
+import com.baloise.jaxrs.beans.Pojo;
+import com.baloise.jaxrs.provider.ObjectMapperContextResolver;
+import com.baloise.jaxrs.resource.RestEndpoint;
 import org.junit.Assert;
 import org.junit.Test;
 
